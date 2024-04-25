@@ -3,7 +3,8 @@ mod options;
 use actix_web::{App, HttpRequest, HttpResponse, HttpServer, Responder};
 use actix_web::http::Method;
 use actix_web::web::{Bytes, to};
-
+use clap::Parser;
+use crate::options::Cli;
 
 
 async fn default_route(req_method: Method, http_request: HttpRequest, bytes: Bytes) -> impl Responder {
@@ -15,13 +16,16 @@ async fn default_route(req_method: Method, http_request: HttpRequest, bytes: Byt
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let args = Cli::parse();
+    let port = args.port;
+
     println!("Starting.. ");
     println!("Listening at 127.0.0.1:8080\n");
     HttpServer::new(|| {
         App::new()
             .default_service(to(default_route))
     })
-        .bind(("127.0.0.1", 8080))?
+        .bind(("127.0.0.1", port))?
         .run()
         .await
 }
