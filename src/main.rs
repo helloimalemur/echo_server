@@ -20,7 +20,7 @@ async fn main() -> std::io::Result<()> {
     let port = args.port;
 
     println!("Starting.. ");
-    println!("Listening at 127.0.0.1:8080\n");
+    println!("Listening at 127.0.0.1:{}\n", port);
     HttpServer::new(|| {
         App::new()
             .default_service(to(default_route))
